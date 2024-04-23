@@ -83,12 +83,18 @@ class SpiderURL
         $this->doc = $doc;
     }
 
-    public function getUrls(): array
+    public function getURLs(): array
     {
         if ($this->doc === null) return [];
         return $this->handleHrefs(
             $this->getAllHref()
         );
+    }
+
+    public function getUnknownURLs(): array
+    {
+        if ($this->doc === null) return [];
+        return $this->filterURLs($this->getAllHref(), true);
     }
 
     // ------------------------------------------------------------------
@@ -134,13 +140,21 @@ class SpiderURL
         return \array_filter($tags_a, fn (string $a) => $a !== '');
     }
 
+    protected function filterURLs(array $hrefs, bool $unknown_url = false): array
+    {
+        return \array_filter($hrefs, function (string $href) use ($unknown_url) {
+            $r = \_str()->startsWith($href, \array_merge($this->getAllVariants(), ['/']));
+
+            if ($unknown_url) return !$r;
+            return $r;
+        });
+    }
+
     protected function handleHrefs(array $hrefs): array
     {
         if (!$hrefs) return [];
 
-        $hrefs = \array_filter($hrefs, function (string $href) {
-            return \_str()->startsWith($href, \array_merge($this->getAllVariants(), ['/']));
-        });
+        $hrefs = $this->filterURLs($hrefs);
 
         // ------------------------------------------------------------------
         // ___
