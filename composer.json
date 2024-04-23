@@ -17,7 +17,9 @@
   "prefer-stable": true,
   "require": {
     "php": "^8.2",
-    "imangazaliev/didom": "^2.0"
+    "imangazaliev/didom": "^2.0",
+    "inilim/array": "dev-main",
+    "inilim/string": "dev-main"
   },
   "require-dev": {
     "phpstan/phpstan": "@stable"
