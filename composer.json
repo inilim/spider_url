@@ -1,0 +1,25 @@
+{
+  "name": "inilim/spider_url",
+  "description": "spider_url",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Inilim\\SpiderURL\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "inilim"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": "^8.2",
+    "imangazaliev/didom": "^2.0"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "@stable"
+  }
+}
