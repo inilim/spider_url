@@ -91,14 +91,14 @@ class SpiderURL
         );
     }
 
-    public function getUnknownURLs(): array
-    {
-        if ($this->doc === null) return [];
-        return $this->handleHrefs(
-            $this->getAllHref(),
-            true,
-        );
-    }
+    // public function getUnknownURLs(): array
+    // {
+    //     if ($this->doc === null) return [];
+    //     return $this->handleHrefs(
+    //         $this->getAllHref(),
+    //         true,
+    //     );
+    // }
 
     // ------------------------------------------------------------------
     // ___
