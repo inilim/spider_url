@@ -94,7 +94,10 @@ class SpiderURL
     public function getUnknownURLs(): array
     {
         if ($this->doc === null) return [];
-        return $this->filterURLs($this->getAllHref(), true);
+        return $this->handleHrefs(
+            $this->getAllHref(),
+            true,
+        );
     }
 
     // ------------------------------------------------------------------
@@ -150,22 +153,24 @@ class SpiderURL
         });
     }
 
-    protected function handleHrefs(array $hrefs): array
+    protected function handleHrefs(array $hrefs, bool $unknown_url = false): array
     {
         if (!$hrefs) return [];
 
-        $hrefs = $this->filterURLs($hrefs);
+        $hrefs = $this->filterURLs($hrefs, $unknown_url);
 
         // ------------------------------------------------------------------
         // ___
         // ------------------------------------------------------------------
 
-        $hrefs = \_arr()->map($hrefs, function (string $href) {
+        $hrefs = \_arr()->map($hrefs, function (string $href) use ($unknown_url) {
             // ------------------------------------------------------------------
             // ___
             // ------------------------------------------------------------------
 
-            $href = \str_replace($this->getAllVariants(), '', $href);
+            if (!$unknown_url) {
+                $href = \str_replace($this->getAllVariants(), '', $href);
+            }
 
             // ------------------------------------------------------------------
             // ___
@@ -201,7 +206,7 @@ class SpiderURL
         // ___
         // ------------------------------------------------------------------
 
-        $hrefs = \_arr()->map($hrefs, function (string $href) {
+        $hrefs = \_arr()->map($hrefs, function (string $href) use ($unknown_url) {
             $arr = [];
 
             if ($this->save_query) {
@@ -209,7 +214,9 @@ class SpiderURL
                 $arr['crc32_path_and_query'] = \crc32($arr['path_and_query'] ?? '');
             }
 
-            $arr['url']            = $this->start_url . $href;
+            if (!$unknown_url) {
+                $arr['url']            = $this->start_url . $href;
+            }
 
             $arr = $arr + \parse_url($arr['url']);
 
